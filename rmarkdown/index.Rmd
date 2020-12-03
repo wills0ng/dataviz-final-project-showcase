@@ -1,0 +1,99 @@
+---
+title: '2019 LA Traffic Collision Data'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+# Read in data
+latraffic <- read.csv("data/latraffic2019-accidents.csv",
+                      stringsAsFactors = FALSE)
+
+# Source the scripts
+source("scripts/summary_information.R")
+source("scripts/summary_table.R")
+<<<<<<< HEAD:index.Rmd
+=======
+source("scripts/collisions_map.R")
+source("scripts/age_gender.R")
+source("scripts/time_day.R")
+
+>>>>>>> c96b209070ddcef8f1634370714208161d25b26a:rmarkdown/index.Rmd
+```
+
+### Introduction
+Los Angeles City is the second largest city in the United States, with a
+population of 3.99 million (in 2018). As the [fifth-worst traffic ranked](https://la.curbed.com/2019/2/13/18222225/los-angeles-traffic-worst-nation-hours)
+in the nation, this also means that there are a lot of traffic accidents. Because
+of this, we decided to analyze traffic collison data to see if we could find helpful insights and patterns in the collison data.
+
+The dataset used in this analysis is the publicly available [LAPD's City Traffic Collision Data](https://data.lacity.org/A-Safe-City/Traffic-Collision-Data-from-2010-to-Present/d5tf-ez2w/data).
+We decided to look at 2019 data only, as this is the most recent full year
+available. The dataset reflects traffic collision incidents in the City of Los Angeles
+filtered to 2019. This data was transcribed from original traffic reports that
+are typed on paper and so there may be some inaccuracies within the data.
+For example, some location fields with missing data are noted as (0°, 0°).
+also, address fields are only provided to the nearest hundred block in order to
+maintain privacy. This data is as accurate as the data in the database.
+
+Some key questions we are interested in answering include:
+
++ How many traffic accidents occurred in LA in 2019—based on data?
++ What is the relationship between time of day, day of week and the number of traffic incidents occuring?
++ Do certain locations have higher number of collisions?
++ What are the number of collisions by demographic?
+
+### Summary Info
+```{r summary_info}
+# Calculate summary information
+summary_info <- get_summary_information(latraffic)
+```
+
+Here are some numbers that give a high level picture of what is contained in the data. We were able to find that there were approximately **`r summary_info$num_collisions`** collisions that occurred in 2019. On average, **`r summary_info$avg_weekly_collisions`** accidents occur each week, with the most accidents occuring on **`r summary_info$highest_dow`** while the lowest rate of
+accidents occurred on **`r summary_info$lowest_dow`**. The area with the highest number of collision incidents was **`r summary_info$highest_area_name`**.
+
+### Summary Table
+It was group by area to determine the role of traffic lights in accidents. Instead of finding the location with  
+traffic light by zooming in to every single location, we can calculate the total number of traffic light in the area.  
+Average age and descent was put in to calculate the demograhics of the victim, which was one of our question  
+Accident_occur_percentage was included to evaluate the correlation between accident and traffic light (later if needed).  
+
+```{r summary_table, echo=FALSE}
+df <- summary_df
+knitr::kable(df,
+             col.names = c("Area Name", "Number of Accidents",
+                           "Most Frequent Victim Descent",
+                           "Average Victim Age",
+                           "Accident Occur Percentage (out of whole)"))
+```
+
+### Visualizations
+
+#### Collisions Map
+
+`r la_map`
+This interactive map allows users to see each traffic
+<<<<<<< HEAD:index.Rmd
+collision in Los Angeles. It is labeled by its street address and is color coded by
+=======
+collision in Los Angeles for victims with a White descent. This race is chosen as it is the race with the highest population percentage. The map is labeled by the area name and street address of the collision as well as the sex of the victim. It is color coded by
+>>>>>>> c96b209070ddcef8f1634370714208161d25b26a:rmarkdown/index.Rmd
+its area. It can be observed that although one of the smaller areas of Los Angeles,
+the Central Area also has the densest amount of traffic collisions for people of White descent.
+
+#### Age Group and Gender
+
+```{r chart2, echo = FALSE}
+plot(age_group_gender)
+```
+
+This chart shows the demographics for age group and gender as well as the number of accidents. From this chart, we can notice some patterns that occur. From the chart, it shows that male victims are more likely to get into an accident. The chart also shows that from ages 36-55, victims are more likely to get into an accident.
+
+#### Time of Day
+
+```{r chart3, echo = FALSE}
+plot(time_of_day)
+```
+
+The purpose of this histogram is to display the time of days that most accidents happen along with the most common times that they happen. As we can see from the chart, the highest number of accidents in 2019 occurred on a Friday while the least amount of accidents occurred on Sunday.
